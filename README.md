@@ -52,3 +52,41 @@ circuit.draw()
 ![QuantumCircuit](Images/QuantumCoinTossCircuit.PNG)
 
 As we can see from the image, our circuit consists of two parts. First we define a qubit (q). We then execute a quantum operation to put the qubit into a quantum superposition state, this is denoted by H. After putting the qubit into the superposition state, we observe its value and write the value into a constant (C). Now that the qubit value has been observed, it is no longer in a superposition state and its value will remain constant. Its value will determine whether our coin toss landed on heads or tails.
+
+## Running On Real Hardware
+To run the program on real quantum hardware, we will need to make a few minor modifications. First, let us see what IBM quantum computer backends we have available to us.
+
+```Python
+# Access real hardware
+from qiskit import IBMQ
+IBMQ.load_account()
+provider = IBMQ.get_provider(hub='ibm-q')
+for backend in provider.backends():
+    print(backend.status().to_dict())
+```
+
+This gives us the following:
+
+```Python
+{'backend_name': 'ibmq_qasm_simulator', 'backend_version': '0.1.547', 'operational': True, 'pending_jobs': 7, 'status_msg': 'active'}
+{'backend_name': 'ibmq_armonk', 'backend_version': '2.4.35', 'operational': True, 'pending_jobs': 49, 'status_msg': 'active'}
+{'backend_name': 'ibmq_santiago', 'backend_version': '1.4.3', 'operational': True, 'pending_jobs': 248, 'status_msg': 'active'}
+{'backend_name': 'ibmq_bogota', 'backend_version': '1.6.41', 'operational': True, 'pending_jobs': 272, 'status_msg': 'active'}
+{'backend_name': 'ibmq_lima', 'backend_version': '1.0.36', 'operational': True, 'pending_jobs': 261, 'status_msg': 'active'}
+{'backend_name': 'ibmq_belem', 'backend_version': '1.0.42', 'operational': True, 'pending_jobs': 217, 'status_msg': 'internal'}
+{'backend_name': 'ibmq_quito', 'backend_version': '1.1.30', 'operational': True, 'pending_jobs': 202, 'status_msg': 'active'}
+{'backend_name': 'simulator_statevector', 'backend_version': '0.1.547', 'operational': True, 'pending_jobs': 7, 'status_msg': 'active'}
+{'backend_name': 'simulator_mps', 'backend_version': '0.1.547', 'operational': True, 'pending_jobs': 7, 'status_msg': 'active'}
+{'backend_name': 'simulator_extended_stabilizer', 'backend_version': '0.1.547', 'operational': True, 'pending_jobs': 7, 'status_msg': 'active'}
+{'backend_name': 'simulator_stabilizer', 'backend_version': '0.1.547', 'operational': True, 'pending_jobs': 8, 'status_msg': 'active'}
+{'backend_name': 'ibmq_manila', 'backend_version': '1.0.30', 'operational': True, 'pending_jobs': 175, 'status_msg': 'active'}
+```
+For this demo, I have chosen to run the program on IBM's quantum computer in Armonk, New York. To do so, we can run the following:
+
+```Python
+real_device = provider.get_backend('ibmq_armonk')
+job = real_device.run(transpile(circuit, real_device), shots=10000)
+result = job.result()
+```
+
+We could have run the program once for a single coin toss. But to test the fairness of the coin toss, I have run the program 10000 times. After the job has been run the set number of times, we are given a histogram with the probability of each outcome. Here is the histogram I got when running on the Armonk quantum computer:
