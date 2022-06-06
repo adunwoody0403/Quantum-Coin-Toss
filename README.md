@@ -42,3 +42,13 @@ else:
     else: print ("Tails. You win.")
  
 ```
+## Quantum Circuit
+The resulting quantum circuit of the above program is very simple. We can view a visual representation of the circuit with the following command
+```Python
+# Draw circuit
+circuit.draw()
+```
+
+![QuantumCircuit](Images/QuantumCoinTossCircuit.PNG)
+
+As we can see from the image, our circuit consists of two parts. First we define a qubit (q). We then execute a quantum operation to put the qubit into a quantum superposition state, this is denoted by H. After putting the qubit into the superposition state, we observe its value and write the value into a constant (C). Now that the qubit value has been observed, it is no longer in a superposition state and its value will remain constant. Its value will determine whether our coin toss landed on heads or tails.
