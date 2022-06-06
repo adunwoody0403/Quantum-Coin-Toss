@@ -90,3 +90,7 @@ result = job.result()
 ```
 
 We could have run the program once for a single coin toss. But to test the fairness of the coin toss, I have run the program 10000 times. After the job has been run the set number of times, we are given a histogram with the probability of each outcome. Here is the histogram I got when running on the Armonk quantum computer:
+
+![QuantumCoinTossResult](Images/QuantumCoinTossResult.PNG)
+
+From the image, we can see that our results resulted in 0 (Heads) approximately 55% of the time, and 1 (Tails) approximately 45% of the time. It is safe to assume that if we were to run this program more times, our result for each outcome would approach 50%, thus would be considered a fair coin toss. 
